@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Salon Ekle";
+}
+<h2>Yeni Salon Ekle</h2>
+<form method="post" asp-action="Create">
+    <div class="mb-3">
+        <label for="Adı" class="form-label">Salon Adı</label>
+        <input type="text" class="form-control" id="Adı" name="Adı" required />
+    </div>
+    <div class="mb-3">
+        <label for="Adres" class="form-label">Adres</label>
+        <input type="text" class="form-control" id="Adres" name="Adres" required />
+    </div>
+    <div class="mb-3">
+        <label for="Telefon" class="form-label">Telefon</label>
+        <input type="text" class="form-control" id="Telefon" name="Telefon" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Yeni Hizmet Ekle";
+}
+<h2>Yeni Hizmet Ekle</h2>
+<form method="post" asp-action="Create">
+    <div class="mb-3">
+        <label for="Adı" class="form-label">Hizmet Adı</label>
+        <input type="text" class="form-control" id="Adı" name="Adı" required />
+    </div>
+    <div class="mb-3">
+        <label for="Süre" class="form-label">Süre (Dakika)</label>
+        <input type="number" class="form-control" id="Süre" name="Süre" required />
+    </div>
+    <div class="mb-3">
+        <label for="Ücret" class="form-label">Ücret (₺)</label>
+        <input type="number" class="form-control" id="Ücret" name="Ücret" required />
+    </div>
+    <div class="mb-3">
+        <label for="SalonID" class="form-label">Salon</label>
+        <select class="form-select" id="SalonID" name="SalonID" required>
+            <option value="">Bir salon seçin</option>
+            @foreach (var salon in ViewData["Salonlar"] as List<KuaforYonetim.Models.Salon>)
+            {
+                <option value="@salon.SalonID">@salon.Adı</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>

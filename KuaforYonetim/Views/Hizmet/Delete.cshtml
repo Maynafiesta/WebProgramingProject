@@ -1,0 +1,17 @@
+﻿@model KuaforYonetim.Models.Hizmet
+@{
+    ViewData["Title"] = "Hizmet Sil";
+}
+<h2>Hizmet Sil</h2>
+<p>Bu hizmeti silmek istediğinize emin misiniz?</p>
+<div>
+    <h5>Hizmet Adı: @Model.Adı</h5>
+    <h6>Salon: @Model.Salon.Adı</h6>
+    <p>Süre: @Model.Süre dakika</p>
+    <p>Ücret: @Model.Ücret ₺</p>
+</div>
+<form method="post">
+    <input type="hidden" name="HizmetID" value="@Model.HizmetID" />
+    <button type="submit" class="btn btn-danger">Evet, sil</button>
+    <a href="/Hizmet/Index" class="btn btn-secondary">İptal</a>
+</form>
