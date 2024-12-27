@@ -27,7 +27,8 @@ public class HomeController : Controller
     }
     public IActionResult HairDressers()
     {
-        return View();
+        var hairDressers = _context.Stores.Where(s => s.Type == StoreType.HairDresser).ToList();
+        return View(hairDressers);
     }
     public IActionResult CreateStore()
     {
