@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Salon Oluşturma";
+}
+@model WebApplication1.Models.Store
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Lütfen Eklemek İstediğiniz Salonun Özelliklerini Giriniz</title>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Salon Oluştur</h2>
+    <form asp-action="CreateNewStore" asp-controller="Home" method="post">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Salon Adı:</label>
+            <input class="form-control" id="Name" type="text" placeholder="Lütfen Salon Adını Giriniz" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Type" class="form-label">Salon Türü:</label>
+            <select class="form-select" id="Type" asp-for="Type" asp-items="Html.GetEnumSelectList<WebApplication1.Models.StoreType>()">
+                <option value="">Tür Seçiniz</option>
+            </select>
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Oluştur</button>
+    </form>
+</div>
+</body>
+</html>
