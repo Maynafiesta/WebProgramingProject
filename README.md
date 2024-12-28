@@ -1,4 +1,6 @@
-﻿# Tarık Kartal Y245012016 
+﻿Github Link : https://github.com/Maynafiesta/WebProgramingProject
+
+# Tarık Kartal Y245012016 
 # Isletme Yonetim Projesi 
 
 ### Database 
