@@ -51,7 +51,7 @@ public class AppointmentController : Controller
             .Where(a => a.EmployeeId == employeeId &&
                         ((appointmentTime >= a.AppointmentTime && appointmentTime < a.AppointmentTime.AddHours(1)) ||
                          (appointmentTime.AddHours(1) > a.AppointmentTime && appointmentTime.AddHours(1) <= a.AppointmentTime.AddHours(1))))
-            .ToList();
+            .ToList(); // Note LINQ sorgusu
 
         if (overlappingAppointments.Any())
         {
