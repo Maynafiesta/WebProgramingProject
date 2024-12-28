@@ -5,7 +5,7 @@
     <thead>
     <tr>
         <th>Salon Adı</th>
-        <th>Çalışanlar</th>
+        <th>İşlemler</th>
     </tr>
     </thead>
     <tbody>
@@ -14,21 +14,24 @@
         <tr>
             <td>@hairDresser.Name</td>
             <td class="d-flex justify-content-end">
-                <!-- Modal açacak buton -->
+                <!-- Çalışan Ekle Butonu -->
+                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-@hairDresser.Id">
+                    Çalışan Ekle
+                </button>
+
+                <!-- Çalışanları Gör Butonu -->
                 <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#employeesModal-@hairDresser.Id">
                     Çalışanları Gör
                 </button>
             </td>
         </tr>
 
-        <!-- Modal -->
-        <div class="modal fade" id="employeesModal-@hairDresser.Id" tabindex="-1"
-             aria-labelledby="employeesModalLabel-@hairDresser.Id" aria-hidden="true">
+        <!-- Çalışanları Gör Modal -->
+        <div class="modal fade" id="employeesModal-@hairDresser.Id" tabindex="-1" aria-labelledby="employeesModalLabel-@hairDresser.Id" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="employeesModalLabel-@hairDresser.Id">@hairDresser.Name -
-                            Çalışanlar</h5>
+                        <h5 class="modal-title" id="employeesModalLabel-@hairDresser.Id">@hairDresser.Name - Çalışanlar</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -37,13 +40,8 @@
                             <ul class="list-group">
                                 @foreach (var employee in hairDresser.Employees)
                                 {
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <li class="list-group-item">
                                         @employee.Name
-                                        <form asp-controller="Store" asp-action="RemoveEmployee" method="post"
-                                              class="d-inline">
-                                            <input type="hidden" name="employeeId" value="@employee.Id"/>
-                                            <button type="submit" class="btn btn-danger btn-sm">İşten Çıkar</button>
-                                        </form>
                                     </li>
                                 }
                             </ul>
@@ -51,6 +49,43 @@
                         else
                         {
                             <p>Bu mağazaya ait çalışan bulunmamaktadır.</p>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Çalışan Ekle Modal -->
+        <div class="modal fade" id="addEmployeeModal-@hairDresser.Id" tabindex="-1" aria-labelledby="addEmployeeModalLabel-@hairDresser.Id" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEmployeeModalLabel-@hairDresser.Id">@hairDresser.Name - Çalışan Ekle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if (ViewBag.AvailableEmployees != null && ((List<WebApplication1.Models.Employee>)ViewBag.AvailableEmployees).Any())
+                        {
+                            <form asp-controller="Store" asp-action="AddEmployeeToStore" method="post">
+                                <input type="hidden" name="storeId" value="@hairDresser.Id" />
+                                <div class="form-group">
+                                    <label>Çalışan Seç</label>
+                                    <select name="employeeId" class="form-control">
+                                        @foreach (var employee in (List<WebApplication1.Models.Employee>)ViewBag.AvailableEmployees)
+                                        {
+                                            <option value="@employee.Id">@employee.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success mt-3">Ekle</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>İşe hazır çalışan bulunmamaktadır.</p>
                         }
                     </div>
                     <div class="modal-footer">

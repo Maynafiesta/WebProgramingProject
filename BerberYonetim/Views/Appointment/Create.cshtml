@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<h2>Randevu Al</h2>
+
+<!-- Başarı ve Hata Mesajları -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Create" method="post">
+    <!-- Mağaza Seçimi -->
+    <div class="form-group">
+        <label for="storeSelect">Salon Seç</label>
+        <select id="storeSelect" name="storeId" class="form-control" required>
+            <option value="">Bir salon seçin</option>
+            @foreach (var store in ViewBag.Stores)
+            {
+                <option value="@store.Id">@store.Name (@store.Type)</option>
+            }
+        </select>
+    </div>
+
+    <!-- Çalışan Seçimi -->
+    <div class="form-group mt-3">
+        <label for="employeeSelect">Çalışan Seç</label>
+        <select id="employeeSelect" name="employeeId" class="form-control" required>
+            <option value="">Önce bir salon seçin</option>
+        </select>
+    </div>
+
+    <!-- Randevu Tarihi ve Saati -->
+    <div class="form-group mt-3">
+        <label for="appointmentTime">Randevu Tarihi ve Saati</label>
+        <input type="datetime-local" id="appointmentTime" name="appointmentTime" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Randevu Al</button>
+</form>
+
+<!-- Çalışanları Dinamik Yükleme -->
+<script>
+    document.getElementById("storeSelect").addEventListener("change", function () {
+        const storeId = this.value;
+        const employeeSelect = document.getElementById("employeeSelect");
+
+        if (storeId) {
+            fetch(`/api/employees?storeId=${storeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    employeeSelect.innerHTML = '<option value="">Bir çalışan seçin</option>';
+                    data.forEach(employee => {
+                        const option = document.createElement("option");
+                        option.value = employee.id;
+                        option.textContent = employee.name;
+                        employeeSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Çalışanları yükleme hatası:", error));
+        } else {
+            employeeSelect.innerHTML = '<option value="">Önce bir salon seçin</option>';
+        }
+    });
+</script>

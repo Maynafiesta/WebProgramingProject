@@ -32,14 +32,49 @@ namespace WebApplication1.Controllers
                 .Where(s => s.Type == StoreType.Barber)
                 .Include(s => s.Employees) // Çalışanları dahil et
                 .ToList();
+
+            // İşe hazır (boşta olan) çalışanları ViewBag ile gönder
+            ViewBag.AvailableEmployees = _context.Employees
+                .Where(e => e.StoreId == null) // Çalışanı boşta olanları filtrele
+                .ToList();
+
             return View(barbers);
         }
 
+        [HttpPost]
+        public IActionResult AddEmployeeToStore(int storeId, int employeeId)
+        {
+            var store = _context.Stores.FirstOrDefault(s => s.Id == storeId);
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == employeeId);
+
+            if (store == null || employee == null)
+            {
+                return NotFound("Mağaza veya çalışan bulunamadı.");
+            }
+
+            var storeType = store.Type;
+            employee.StoreId = store.Id; // Çalışanı mağazaya ata
+            _context.SaveChanges();
+            switch (storeType)
+            {
+                case StoreType.Barber:
+                    return RedirectToAction("Barbers");
+                case StoreType.HairDresser:
+                    return RedirectToAction("HairDressers");
+                default:
+                    return RedirectToAction("Index", "Home"); // Varsayılan yönlendirme
+            }
+        }
         public IActionResult HairDressers()
         {
             var hairDressers = _context.Stores
                 .Where(s => s.Type == StoreType.HairDresser)
                 .Include(s => s.Employees) // Çalışanları dahil et
+                .ToList();
+
+            // İşe hazır (boşta olan) çalışanları ViewBag ile gönder
+            ViewBag.AvailableEmployees = _context.Employees
+                .Where(e => e.StoreId == null) // Çalışanı boşta olanları filtrele
                 .ToList();
 
             return View(hairDressers);

@@ -64,4 +64,28 @@ public class EmployeeController : Controller
 
         return View(employees);
     }
+    public IActionResult Details(int id)
+    {
+        var employee = _context.Employees
+            .Include(e => e.Skills) // Yeteneklerle birlikte al
+            .FirstOrDefault(e => e.Id == id);
+
+        if (employee == null)
+        {
+            return NotFound("Çalışan bulunamadı.");
+        }
+
+        return View(employee);
+    }
+
+    [HttpGet("api/employees")]
+    public IActionResult GetEmployeesByStore(int storeId)
+    {
+        var employees = _context.Employees
+            .Where(e => e.StoreId == storeId)
+            .Select(e => new { e.Id, e.Name })
+            .ToList();
+
+        return Json(employees);
+    }
 }

@@ -6,16 +6,18 @@ namespace WebApplication1.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
         [HttpGet]
         public IActionResult Login()
-        {
+        {  
             return View();
         }
 
@@ -36,7 +38,6 @@ namespace WebApplication1.Controllers
 
             return View(model);
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -44,5 +45,41 @@ namespace WebApplication1.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> Register(string email, string password)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                TempData["RegisterError"] = "E-posta ve şifre gereklidir.";
+                return RedirectToAction("Login");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                TempData["RegisterError"] = "Bu e-posta adresi zaten kayıtlı.";
+                return RedirectToAction("Login");
+            }
+
+            user = new IdentityUser
+            {
+                UserName = email,
+                Email = email
+            };
+
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+                TempData["RegisterSuccess"] = "Üyelik başarıyla oluşturuldu. Artık giriş yapabilirsiniz.";
+                return RedirectToAction("Login");
+            }
+
+            TempData["RegisterError"] = "Kayıt işlemi sırasında bir hata oluştu.";
+            return RedirectToAction("Login");
+        }
+
+
     }
 }

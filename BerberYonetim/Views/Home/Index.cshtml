@@ -7,13 +7,20 @@
 
 @if (isAdmin)
 {
-    <a asp-controller="Store" asp-action="Barbers" class="btn btn-primary">Berberleri Listele</a>
-    <a asp-controller="Store" asp-action="HairDressers" class="btn btn-primary">Kuaförleri Listele</a>
-    <a asp-controller="Store" asp-action="CreateStore" class="btn btn-success">Yeni Store Ekle</a>
-    <a asp-controller="Employee" asp-action="Create" class="btn btn-success">Yeni Çalışan İşe Al</a>
+    <h3>Admin Panel</h3>
+    <div class="btn-group" role="group">
+        <a asp-controller="Store" asp-action="Barbers" class="btn btn-primary">Berberleri Listele</a>
+        <a asp-controller="Store" asp-action="HairDressers" class="btn btn-primary">Kuaförleri Listele</a>
+        <a asp-controller="Store" asp-action="CreateStore" class="btn btn-success">Yeni Store Ekle</a>
+        <a asp-controller="Employee" asp-action="Create" class="btn btn-success">Yeni Çalışan İşe Al</a>
+    </div>
 }
 else
 {
-    <h3>Welcome User</h3>
-    <p>Yalnızca sınırlı erişiminiz var.</p>
+    <h3>Kullanıcı Paneli</h3>
+    <p>Salonlar ve çalışanlardan randevu almak için aşağıdaki seçenekleri kullanabilirsiniz:</p>
+    <div class="btn-group" role="group">
+        <a asp-controller="Appointment" asp-action="Create" class="btn btn-primary">Randevu Al</a>
+        <a asp-controller="Appointment" asp-action="MyAppointments" class="btn btn-info">Randevularım</a>
+    </div>
 }

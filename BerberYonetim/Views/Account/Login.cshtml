@@ -1,17 +1,40 @@
 @model WebApplication1.Models.UserLoginModel
 
-<h2>Login</h2>
+<h2>Giriş Yap</h2>
 
-@if (!ViewData.ModelState.IsValid)
+<!-- Başarı Bildirimi -->
+@if (TempData["RegisterSuccess"] != null)
 {
-    <div class="alert alert-danger">
-        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@error.ErrorMessage</p>
-        }
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Başarılı</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["RegisterSuccess"]
+            </div>
+        </div>
     </div>
 }
 
+<!-- Hata Bildirimi -->
+@if (TempData["RegisterError"] != null)
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast show bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Hata</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["RegisterError"]
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Giriş Yap Formu -->
 <form asp-action="Login" method="post">
     <div class="form-group">
         <label>Email</label>
@@ -23,5 +46,42 @@
         <input asp-for="Password" class="form-control" type="password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="d-flex">
+        <button type="submit" class="btn btn-primary me-2">Giriş Yap</button>
+
+        <!-- Üye Ol Butonu -->
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#registerModal">
+            Üye Ol
+        </button>
+    </div>
 </form>
+
+<!-- Üye Ol Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Üye Ol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Register" method="post" id="registerForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="Email" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input name="Password" class="form-control" type="password" required />
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">Üye Ol</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
