@@ -2,24 +2,8 @@
 
 <h2>Giriş Yap</h2>
 
-<!-- Başarı Bildirimi -->
-@if (TempData["RegisterSuccess"] != null)
-{
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Başarılı</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                @TempData["RegisterSuccess"]
-            </div>
-        </div>
-    </div>
-}
-
-<!-- Hata Bildirimi -->
-@if (TempData["RegisterError"] != null)
+<!-- Giriş Başarısız Bildirimi -->
+@if (TempData["LoginError"] != null)
 {
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div class="toast show bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true">
@@ -28,7 +12,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                @TempData["RegisterError"]
+                @TempData["LoginError"]
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Başarı Bildirimi -->
+@if (TempData["RegisterSuccess"] != null)
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast show bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Başarılı</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["RegisterSuccess"]
             </div>
         </div>
     </div>

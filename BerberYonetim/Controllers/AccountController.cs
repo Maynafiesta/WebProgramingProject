@@ -24,19 +24,19 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                // Hata mesajı ayarla
-                ModelState.AddModelError(string.Empty, "Geçersiz e-posta veya parola.");
+                return View(model);
             }
 
-            return View(model);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["LoginError"] = "Girdiğiniz bilgiler doğru değil. Lütfen tekrar deneyin.";
+            return RedirectToAction("Login");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

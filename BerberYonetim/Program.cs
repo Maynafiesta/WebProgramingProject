@@ -149,24 +149,6 @@ async Task SeedUsersAndRoles(UserManager<IdentityUser> userManager, RoleManager<
             }
         }
 
-        // Çalışanları ekle
-        if (!context.Employees.Any())
-        {
-            Console.WriteLine("Çalışanlar ekleniyor...");
-            var employees = Enumerable.Range(1, 20).Select(i => new Employee
-            {
-                Name = $"Çalışan {i}",
-                StoreId = null // Başlangıçta mağaza ile ilişkili değil
-            }).ToList();
-
-            context.Employees.AddRange(employees);
-            await context.SaveChangesAsync();
-            Console.WriteLine("20 çalışan başarıyla eklendi.");
-        }
-        else
-        {
-            Console.WriteLine("Çalışanlar zaten mevcut, seed işlemi atlandı.");
-        }
         if (!context.Skills.Any())
         {
             var skills = new List<Skill>

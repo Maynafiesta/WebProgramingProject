@@ -7,7 +7,7 @@
     <tr>
         <th>Salon</th>
         <th>Çalışan</th>
-        <th>Tarih ve Saat</th>
+        <th>Randevu Zamanı</th>
     </tr>
     </thead>
     <tbody>
@@ -16,7 +16,11 @@
         <tr>
             <td>@appointment.Store.Name</td>
             <td>@appointment.Employee.Name</td>
-            <td>@appointment.AppointmentTime.ToString("g")</td>
+            <td>
+                @appointment.AppointmentTime.ToString("g")
+                -
+                @appointment.AppointmentTime.AddHours(1).ToString("g")
+            </td>
         </tr>
     }
     </tbody>

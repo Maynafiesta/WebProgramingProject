@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Saç Önerisi Al";
+}
+
+<h2>Saç Önerisi Al</h2>
+
+<form asp-action="GetRecommendation" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Resim Yükle</label>
+        <input type="file" name="ImageFile" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Öneri Al</button>
+</form>
+
+@if (ViewBag.RecommendationResult != null)
+{
+    <h3 class="mt-4">Önerilen Saç Modeli:</h3>
+    <p>@ViewBag.RecommendationResult</p>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-3">
+        @ViewBag.ErrorMessage
+    </div>
+}

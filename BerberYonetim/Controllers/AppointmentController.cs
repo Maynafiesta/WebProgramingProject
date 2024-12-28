@@ -39,11 +39,18 @@ public class AppointmentController : Controller
         // DateTime'ı UTC'ye çevir
         appointmentTime = DateTime.SpecifyKind(appointmentTime, DateTimeKind.Utc);
 
+        // Geçmişe yönelik randevu kontrolü
+        if (appointmentTime < DateTime.UtcNow)
+        {
+            TempData["ErrorMessage"] = "Geçmiş bir tarih için randevu oluşturamazsınız.";
+            return RedirectToAction("Create");
+        }
+
         // Çalışanın belirtilen zaman aralığında başka randevusu var mı?
         var overlappingAppointments = _context.Appointments
             .Where(a => a.EmployeeId == employeeId &&
-                        ((appointmentTime >= a.AppointmentTime && appointmentTime < a.AppointmentEndTime) ||
-                         (appointmentTime.AddHours(1) > a.AppointmentTime && appointmentTime.AddHours(1) <= a.AppointmentEndTime)))
+                        ((appointmentTime >= a.AppointmentTime && appointmentTime < a.AppointmentTime.AddHours(1)) ||
+                         (appointmentTime.AddHours(1) > a.AppointmentTime && appointmentTime.AddHours(1) <= a.AppointmentTime.AddHours(1))))
             .ToList();
 
         if (overlappingAppointments.Any())
