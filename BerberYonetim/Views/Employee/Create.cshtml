@@ -1,0 +1,22 @@
+﻿@model WebApplication1.Models.CreateEmployeeViewModel
+
+<h2>Yeni Çalışan Ekle</h2>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Name">Çalışan Adı</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Yetenekler</label>
+        <select asp-for="SelectedSkillIds" class="form-control" multiple="multiple">
+            @foreach (var skill in Model.AvailableSkills)
+            {
+                <option value="@skill.Id">@skill.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Ekle</button>
+</form>

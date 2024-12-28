@@ -1,39 +1,48 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
-public class AccountController : Controller
+namespace WebApplication1.Controllers
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-
-    public AccountController(SignInManager<IdentityUser> signInManager)
+    public class AccountController : Controller
     {
-        _signInManager = signInManager;
-    }
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-    [HttpGet]
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Login(string email, string password)
-    {
-        var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: false);
-
-        if (result.Succeeded)
+        public AccountController(SignInManager<IdentityUser> signInManager)
         {
-            return RedirectToAction("Index", "Home");
+            _signInManager = signInManager;
         }
 
-        ModelState.AddModelError(string.Empty, "Giriş başarısız.");
-        return View();
-    }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();
-        return RedirectToAction("Login", "Account");
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Hata mesajı ayarla
+                ModelState.AddModelError(string.Empty, "Geçersiz e-posta veya parola.");
+            }
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

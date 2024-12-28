@@ -1,33 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Salon Oluşturma";
-}
-@model WebApplication1.Models.Store
-<!DOCTYPE html>
+﻿@model WebApplication1.Models.CreateStoreViewModel
 
-<html>
-<head>
-    <title>Lütfen Eklemek İstediğiniz Salonun Özelliklerini Giriniz</title>
-</head>
-<body>
-<div class="container mt-4">
-    <h2>Salon Oluştur</h2>
-    <form asp-action="CreateNewStore" asp-controller="Home" method="post">
-        <div class="mb-3">
-            <label for="Name" class="form-label">Salon Adı:</label>
-            <input class="form-control" id="Name" type="text" placeholder="Lütfen Salon Adını Giriniz" asp-for="Name" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+<h2>Yeni Store Ekle</h2>
 
-        <div class="mb-3">
-            <label for="Type" class="form-label">Salon Türü:</label>
-            <select class="form-select" id="Type" asp-for="Type" asp-items="Html.GetEnumSelectList<WebApplication1.Models.StoreType>()">
-                <option value="">Tür Seçiniz</option>
-            </select>
-            <span asp-validation-for="Type" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Oluştur</button>
-    </form>
-</div>
-</body>
-</html>
+<form asp-action="CreateStore" method="post">
+    <div class="form-group">
+        <label>Salon Adı</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Salon Türü</label>
+        <select asp-for="Type" class="form-control">
+            <option value="Barber">Berber</option>
+            <option value="HairDresser">Kuaför</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Çalışan Seç</label>
+        <select asp-for="SelectedEmployeeIds" class="form-control" multiple="multiple">
+            @foreach (var employee in Model.AvailableEmployees)
+            {
+                <option value="@employee.Id">@employee.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>

@@ -1,8 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Store Management";
+    var isAdmin = ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"];
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Salon Yönetim Paneline Hoşgeldiniz</h2>
+
+@if (isAdmin)
+{
+    <a asp-controller="Store" asp-action="Barbers" class="btn btn-primary">Berberleri Listele</a>
+    <a asp-controller="Store" asp-action="HairDressers" class="btn btn-primary">Kuaförleri Listele</a>
+    <a asp-controller="Store" asp-action="CreateStore" class="btn btn-success">Yeni Store Ekle</a>
+    <a asp-controller="Employee" asp-action="Create" class="btn btn-success">Yeni Çalışan İşe Al</a>
+}
+else
+{
+    <h3>Welcome User</h3>
+    <p>Yalnızca sınırlı erişiminiz var.</p>
+}

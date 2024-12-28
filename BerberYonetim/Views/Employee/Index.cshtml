@@ -1,0 +1,34 @@
+﻿@model List<WebApplication1.Models.Employee>
+
+<h2>Çalışanlar</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Adı</th>
+        <th>Yetenekler</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var employee in Model)
+    {
+        <tr>
+            <td>@employee.Name</td>
+            <td>
+                @if (employee.Skills != null && employee.Skills.Any())
+                {
+                    <ul>
+                        @foreach (var skill in employee.Skills)
+                        {
+                            <li>@skill.Name</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Yetenek Yok</p>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
